@@ -9,15 +9,15 @@ namespace WebApplication2.Notification.SmsNotification
 {
     public class TwilioSmsNotification
     {
-        public void SendSms(string toPhoneNumber)
+        public void SendSms(string toPhoneNumber, string bodyMessage)
         {
             const string accountSid = "ACeb0bfe31785044cb659e70085da53550";
-            const string authToken = "your_auth_token";
+            const string authToken = "5347c34771748e1d930b01f7ccc17099";
 
             TwilioClient.Init(accountSid, authToken);
 
             var message = MessageResource.Create(
-                body: "Join Earth's mightiest heroes. Like Kevin Bacon.",
+                body: bodyMessage,
                 from: new Twilio.Types.PhoneNumber("+13367925756"),
                 to: new Twilio.Types.PhoneNumber(toPhoneNumber)
             );

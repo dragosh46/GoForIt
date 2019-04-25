@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,22 +16,33 @@ namespace WebApplication2.Controllers
     public class PlayerController : Controller
     {
         Game gamePlayer = new Game();
+        Player player = new Player();
         // GET api/values/5
         [HttpGet("{id}")]
             public ActionResult<Player> Get(int playerId)
             {
-            TwilioSmsNotification twil = new TwilioSmsNotification();
-            twil.SendSms("+40761559101");
+            //SMS URILE COSTA BANI BAAA
+            #region SEND SMS NOTIFICATION
+            //TwilioSmsNotification twil = new TwilioSmsNotification();
+            //twil.SendSms("+40761559101","ENTER BODY MESSAGE HERE");
+            #endregion
+
             var returnedPlayer = gamePlayer.GetPlayer(playerId);
-           
+            
                 return returnedPlayer;
             }
         
         [HttpPost]
-            public void Post([FromBody] string firstName,string lastName,int age,string mobileNumber, int gameId)
-            {
-            
-                Player player = new Player(firstName, lastName, age, mobileNumber, gameId);
+            public void Post([FromBody] int playerId)            {
+           
+            string requestBody = Request.Body.ToString();
+            Player playerDeserialized = JsonConvert.DeserializeObject<Player>(requestBody);
+            string firstName=playerDeserialized.FirstName;
+            string lastName = playerDeserialized.LastName;
+            int age = playerDeserialized.Age;
+            string mobileNumber = playerDeserialized.MobileNumber;
+            int gameId = 1;
+            Player player = new Player(firstName, lastName, age, mobileNumber, gameId);
             gamePlayer.Players.Add(player);
             }
         }
